@@ -8,10 +8,13 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_INSTALL_LIBDIR "lib")
 
+message("CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
+
 find_package(Qt6 6.2 COMPONENTS Quick REQUIRED)
 
 qt_add_executable(appVelocimetro
-    main.cpp Imagens.qrc
+    main.cpp Imagens.qrc Privacy_Policy.txt
+    MANUAL_FINALIZATION
 )
 
 qt_add_qml_module(appVelocimetro
@@ -28,9 +31,15 @@ set_target_properties(appVelocimetro PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
+set_property(TARGET appVelocimetro APPEND PROPERTY
+    QT_ANDROID_PACKAGE_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/android
+)
+
 target_link_libraries(appVelocimetro
     PRIVATE Qt6::Quick)
 
 install(TARGETS appVelocimetro
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+qt_finalize_executable(appVelocimetro)

@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Window
+import QtQuick.Layouts
 import QtPositioning
 
 Window {
@@ -9,22 +9,37 @@ Window {
     title: qsTr("Velocímetro")
     color: "black"
 
-    Image {
-        id: qtLogo
-        source: `qrc:/Imagens/qt6.png`
-        width: (parent.width * (1/4))
-        height: (parent.height * (1/15));
+    Rectangle {
+        id: qtAcknowledgements
+        width: (root.width * (10/100))
+        height: width
         anchors.right: parent.right
         anchors.top: parent.top
-        opacity: 0.5
+        clip: true
+        color: "transparent"
+        Image {
+            id: qtLogo
+            source: `qrc:/Imagens/qt6.png`
+            width: parent.width
+            height: parent.height
+            opacity: 1
+        }
+        Label {
+            id: lblQtAcknowledgement
+            text: qsTr("Qt 6.2.4")
+            font.pixelSize: 10;
+            anchors.bottom: parent.bottom
+        }
     }
 
     function verificaErroGPS() {
         if( positionSource.sourceError === PositionSource.AccessError ) {
-            lblVelocidade.text = qsTr("Dê permissão de GPS ao App");
+            lblVelocidadeKMh.text = qsTr("Permita o acesso ao GPS");
+            lblVelocidadeMs.text = "";
         }
         if( positionSource.sourceError === PositionSource.ClosedError ) {
-            lblVelocidade.text = qsTr("GPS Inativo");
+            lblVelocidadeKMh.text = qsTr("Ative o GPS e mova-se");
+            lblVelocidadeMs.text = "";
         }
     }
 
@@ -32,44 +47,47 @@ Window {
         root.showFullScreen();
     }
 
-    MouseArea {
-        id: mouseArea
-        property bool flagMPH: false;
-
-        anchors.fill: parent
-        onClicked: function() {
-            flagMPH = !flagMPH;
-        }
-    }
-
     PositionSource {
         id: positionSource
-        updateInterval: 0 // o GPS atualiza com seu próprio intervalo
+        updateInterval: 100
         active: true
         preferredPositioningMethods: PositionSource.SatellitePositioningMethods
 
         onPositionChanged: function() {
-            let velocidade = 0;
-
-            let flagMPH = mouseArea.flagMPH;
-            let multiplicador = flagMPH ? 1 : 3.6;
-
             let vel = positionSource.position.speed;
-            let velMS = isNaN(vel) ? 0 : vel;
-            velocidade = `${Math.floor(velMS * multiplicador)} ${flagMPH ? "M/s" : "KM/h"}`;
-            lblVelocidade.text = velocidade;
+            vel = isNaN(vel) ? 0 : vel;
+            lblVelocidadeKMh.text = `${Math.floor(vel * 3.6)} KM/h`;
+            lblVelocidadeMs.text = `${Math.floor(vel)} M/s`;
         }
         onSourceErrorChanged: verificaErroGPS();
     }
 
-    Label {
-        id: lblVelocidade
-        color: "white"
-        text: "0 KM/h"
+    ColumnLayout {
+        id: columnLayout
+        anchors.fill: parent
         anchors.centerIn: parent
-        font.pixelSize: parent.width/(lblVelocidade.text.length);
-        font.italic: true
-        font.bold: true
+        antialiasing: true
+
+        Label {
+            id: lblVelocidadeKMh
+            color: "white"
+            text: "0 KM/h"
+            Layout.alignment: Qt.AlignHCenter
+            font.pixelSize: (parent.width/(lblVelocidadeKMh.text.length))
+            font.italic: true
+            font.bold: true
+        }
+
+        Label {
+            id: lblVelocidadeMs
+            color: "white"
+            text: "0 M/s"
+            Layout.alignment: Qt.AlignHCenter
+            font.pixelSize: ((parent.width/(lblVelocidadeMs.text.length))/2)
+            font.italic: true
+            font.bold: true
+        }
+
     }
 
 }
