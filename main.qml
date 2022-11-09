@@ -13,6 +13,7 @@ Window {
         id: qtAcknowledgements
         width: (root.width * (10/100))
         height: width
+        z: 1
         anchors.right: parent.right
         anchors.top: parent.top
         clip: true
@@ -62,30 +63,53 @@ Window {
         onSourceErrorChanged: verificaErroGPS();
     }
 
-    ColumnLayout {
-        id: columnLayout
-        anchors.fill: parent
-        anchors.centerIn: parent
-        antialiasing: true
-
-        Label {
-            id: lblVelocidadeKMh
-            color: "white"
-            text: "0 KM/h"
-            Layout.alignment: Qt.AlignHCenter
-            font.pixelSize: (parent.width/(lblVelocidadeKMh.text.length))
-            font.italic: true
-            font.bold: true
+    Column {
+        id: coluna
+        anchors {
+            fill: parent
         }
+        readonly property string color: "black"
 
-        Label {
-            id: lblVelocidadeMs
-            color: "white"
-            text: "0 M/s"
-            Layout.alignment: Qt.AlignHCenter
-            font.pixelSize: ((parent.width/(lblVelocidadeMs.text.length))/2)
-            font.italic: true
-            font.bold: true
+        Rectangle {
+            id: rect1
+            color: coluna.color
+            width: coluna.width
+            height: coluna.height/2
+
+            Label {
+                id: lblVelocidadeKMh
+                color: "white"
+                text: "0 KM/h"
+                anchors {
+                    bottom: rect1.bottom
+                    horizontalCenter: rect1.horizontalCenter
+                    bottomMargin: 10
+                }
+                font.pixelSize: (parent.width/(lblVelocidadeKMh.text.length))
+                font.italic: true
+                font.bold: true
+            }
+
+        }
+        Rectangle {
+            id: rect2
+            color: coluna.color
+            width: coluna.width
+            height: coluna.height/2
+
+            Label {
+                id: lblVelocidadeMs
+                color: "white"
+                text: "0 M/s"
+                anchors {
+                    top: rect2.top
+                    horizontalCenter: rect2.horizontalCenter
+                    topMargin: 10
+                }
+                font.pixelSize: ((parent.width/(lblVelocidadeMs.text.length))/2)
+                font.italic: true
+                font.bold: true
+            }
         }
 
     }
