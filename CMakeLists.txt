@@ -13,7 +13,7 @@ message("CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
 find_package(Qt6 6.2 COMPONENTS Quick REQUIRED)
 
 qt_add_executable(appVelocimetro
-    main.cpp Imagens.qrc Privacy_Policy.txt
+    main.cpp Imagens.qrc Privacy_Policy.txt android/AndroidManifest.xml
     MANUAL_FINALIZATION
 )
 

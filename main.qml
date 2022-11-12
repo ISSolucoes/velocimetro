@@ -11,25 +11,21 @@ Window {
 
     Rectangle {
         id: qtAcknowledgements
-        width: (root.width * (10/100))
-        height: width
+        width: (root.width * (30/100))
+        height: width/4
         z: 1
         anchors.right: parent.right
         anchors.top: parent.top
         clip: true
         color: "transparent"
-        Image {
-            id: qtLogo
-            source: `qrc:/Imagens/qt6.png`
-            width: parent.width
-            height: parent.height
-            opacity: 1
-        }
+
         Label {
             id: lblQtAcknowledgement
-            text: qsTr("Qt 6.2.4")
-            font.pixelSize: 10;
-            anchors.bottom: parent.bottom
+            z: 1
+            text: qsTr("Feito com Qt 6.4.0")
+            font.pixelSize: 14;
+            color: "white"
+            anchors.centerIn: parent
         }
     }
 
