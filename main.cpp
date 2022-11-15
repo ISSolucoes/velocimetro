@@ -8,6 +8,8 @@
 
 int main(int argc, char *argv[])
 {
+    QNativeInterface::QAndroidApplication::hideSplashScreen(3000);
+
     QGuiApplication app(argc, argv);
 
     QTranslator translator;
